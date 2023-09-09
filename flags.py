@@ -37,3 +37,5 @@ parser.add_argument('--norm', action='store_true', default=False, help='Use norm
 parser.add_argument('--train_only', default=True, help='Optimize only for train pairs')
 parser.add_argument('--cosine_scale', type=float, default=20, help="Scale for cosine similarity")
 parser.add_argument('--nhiddenlayers', type=int, default=0, help='Num of hidden layers of attr adapter')
+
+parser.add_argument('--extract_feature_vectors', action='store_true', default=False)

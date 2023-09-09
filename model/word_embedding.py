@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-DATA_FOLDER = '/home/D/wangqs/word embeddings/'
+DATA_FOLDER = 'data_dir/'
 
 def load_word_embeddings(vocab, args):
     if args.emb_type == 'glove':

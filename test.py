@@ -15,9 +15,9 @@ from flags import parser
 
 def main():
     args = parser.parse_args()
-    args.dataset = 'ut-zap50k' # Choose from ut-zap50k | mit-states | cgqa
+    args.dataset = 'mit-states' # Choose from ut-zap50k | mit-states | cgqa
     args.main_root = os.path.dirname(__file__)
-    args.data_root = '/root/datasets'
+    args.data_root = 'data_dir/'
     device = 0 # Your GPU order. If you don't have a GPU, ignore this.
 
     # Get arguments and start logging
