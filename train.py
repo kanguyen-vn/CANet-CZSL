@@ -169,6 +169,8 @@ def test(args, epoch, image_extractor, model, testloader, evaluator, logpath):
         if args.update_image_features:
             data[0] = image_extractor(data[0])
         data[0] = data[0].squeeze()
+        print(f"{data[0].shape = }")
+        print(f"{model.image_embedder_attr = }")
         predictions = model(data)[1]
 
         attr_truth, obj_truth, pair_truth = data[1], data[2], data[3]
