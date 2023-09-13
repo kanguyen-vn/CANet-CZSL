@@ -289,6 +289,8 @@ class CompositionDataset(Dataset):
                 pair, img = image.split('/')
                 pair = pair.replace('_', ' ')
                 image = pair + '/' + img
+            elif self.args.dataset == 'vg':
+                image = f"images/{image}"
             img = self.activations[image]
         else:
             img = self.loader(image)
