@@ -77,8 +77,6 @@ def main():
     print('> Initialize evaluator')
     evaluator = Evaluator(testset, args)
 
-    print(f"{args = }")
-
     with torch.no_grad():
         test(image_extractor, model, testloader, evaluator, args)
 
@@ -94,7 +92,7 @@ def test(image_extractor, model, testloader, evaluator, args):
         data = [d.to(args.device) for d in data]
         if image_extractor:
             data[0] = image_extractor(data[0])
-        print(f"{data[0].shape = }")
+        data[0] = data[0].squeeze()
         _, predictions = model.val_forward(data)
         attr_truth, obj_truth, pair_truth = data[1], data[2], data[3]
         all_pred.append(predictions)
