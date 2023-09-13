@@ -31,7 +31,7 @@ def main():
     # Get arguments and start logging
     print('> Initialize parameters')
     args = parser.parse_args()
-    args.dataset = 'mit-states' # Choose from ut-zap50k | mit-states | cgqa
+    args.dataset = 'vg' # Choose from ut-zap50k | mit-states | cgqa
     args.main_root = os.path.dirname(__file__)
     args.data_root = 'data_dir/'
     device = 0 # Your GPU order. If you use CPU, ignore this.
