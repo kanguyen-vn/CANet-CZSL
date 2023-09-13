@@ -117,6 +117,10 @@ def load_word2vec_embeddings(vocab):
         'eiffel_tower' : 'tower'
     }
 
+    custom_map.update({
+        "10": "ten",
+    })
+
     embeds = []
     for k in vocab:
         if k in custom_map:
