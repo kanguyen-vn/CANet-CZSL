@@ -38,6 +38,7 @@ def main():
     # Get dataset
     print('> Load dataset')
     args.phase = 'test'
+    args.image_extractor = "resnet18"
     testset = dset.CompositionDataset(
         args=args,
         root=os.path.join(args.data_root, args.dataset),
