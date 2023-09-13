@@ -117,11 +117,6 @@ def load_word2vec_embeddings(vocab):
         'eiffel_tower' : 'tower'
     }
 
-    custom_map.update({
-        "10": "ten",
-        "1930's": "nineteen_thirties"
-    })
-
     embeds = []
     for k in vocab:
         if k in custom_map:
@@ -132,8 +127,10 @@ def load_word2vec_embeddings(vocab):
         elif '.' in k and k not in model:
             ks = k.split('.')
             emb = np.stack([model[it] for it in ks]).mean(axis=0)
-        else:
+        elif k in model:
             emb = model[k]
+        else:
+            emb = np.zeros(300)
         embeds.append(emb)
     embeds = torch.Tensor(np.stack(embeds))
     print('  Word2Vec Embeddings loaded, total embeddings: {}'.format(embeds.size()))
