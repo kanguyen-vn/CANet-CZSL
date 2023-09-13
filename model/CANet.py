@@ -136,7 +136,6 @@ class CANet(nn.Module):
         '''======================= Mapper ======================='''
         self.image_embedder_attr = MLP(dset.feat_dim, emb_dim, num_layers=args.nlayers, relu=False, bias=True,
                                        dropout=True, norm=True, layers=[])
-        print(f"{self.image_embedder_attr = }")
         self.image_embedder_obj = MLP(dset.feat_dim, emb_dim, num_layers=args.nlayers, relu=False, bias=True,
                                       dropout=True, norm=True, layers=[])
         self.image_embedder_both = MLP(dset.feat_dim, emb_dim, num_layers=args.nlayers, relu=False, bias=True,
