@@ -4,7 +4,7 @@ dataset:
   splitname: compositional-split-natural
   train_only: true
 model_params:
-  emb_type: ft+w2v
+  emb_type: fasttext
   nhiddenlayers: 0
   nlayer: 2
   alpha: 0.2

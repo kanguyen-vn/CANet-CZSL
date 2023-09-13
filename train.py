@@ -33,7 +33,7 @@ def main():
     args = parser.parse_args()
     args.dataset = 'mit-states' # Choose from ut-zap50k | mit-states | cgqa
     args.main_root = os.path.dirname(__file__)
-    args.data_root = '/root/datasets/'
+    args.data_root = 'data_dir/'
     device = 0 # Your GPU order. If you use CPU, ignore this.
     args.test_set = 'val'
     
