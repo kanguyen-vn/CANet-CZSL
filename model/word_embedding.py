@@ -129,6 +129,9 @@ def load_word2vec_embeddings(vocab):
         if '_' in k and k not in model:
             ks = k.split('_')
             emb = np.stack([model[it] for it in ks]).mean(axis=0)
+        elif '.' in k and k not in model:
+            ks = k.split('.')
+            emb = np.stack([model[it] for it in ks]).mean(axis=0)
         else:
             emb = model[k]
         embeds.append(emb)
