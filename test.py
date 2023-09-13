@@ -15,7 +15,7 @@ from flags import parser
 
 def main():
     args = parser.parse_args()
-    args.dataset = 'mit-states' # Choose from ut-zap50k | mit-states | cgqa
+    args.dataset = 'vg' # Choose from ut-zap50k | mit-states | cgqa
     args.main_root = os.path.dirname(__file__)
     args.data_root = 'data_dir/'
     device = 0 # Your GPU order. If you don't have a GPU, ignore this.
@@ -40,8 +40,8 @@ def main():
     args.phase = 'test'
     testset = dset.CompositionDataset(
         args=args,
-        # root=os.path.join(args.data_root, args.dataset),
-        root=os.path.join(args.data_root, "vg"),
+        root=os.path.join(args.data_root, args.dataset),
+        # root=os.path.join(args.data_root, "vg"),
         phase=args.phase,
         split=args.splitname,
         model =args.image_extractor,
