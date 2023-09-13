@@ -119,6 +119,7 @@ def load_word2vec_embeddings(vocab):
 
     custom_map.update({
         "10": "ten",
+        "1930's": "nineteen thirties'"
     })
 
     embeds = []
