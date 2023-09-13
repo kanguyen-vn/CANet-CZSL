@@ -24,7 +24,7 @@ class ResNet18_conv(ResNet):
 
         return x
 
-def get_image_extractor(args, arch='resnet18', pretrained=True, feature_dim=None):
+def get_image_extractor(arch='resnet18', pretrained=True, feature_dim=None):
     '''
     Inputs
         arch: Base architecture
