@@ -1,6 +1,6 @@
 # external libs
 from tqdm import tqdm
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import os
 from os.path import join as ospj
 from glob import glob
@@ -18,7 +18,10 @@ class ImageLoader:
         self.root_dir = root
 
     def __call__(self, img):
-        img = Image.open(ospj(self.root_dir, img)).convert('RGB')  # We don't want alpha
+        try:
+            img = Image.open(ospj(self.root_dir, img)).convert('RGB')  # We don't want alpha
+        except UnidentifiedImageError:
+            img = None
         return img
 
 
@@ -254,8 +257,8 @@ class CompositionDataset(Dataset):
         image_files = []
         for chunk in tqdm(chunks(files_all, 1024), total=len(files_all) // 1024, desc=f'Extracting features {model}'):
             files = chunk
-            print(f"{files = }")
             imgs = list(map(self.loader, files))
+            imgs = [img for img in imgs if img is not None]
             imgs = list(map(transform, imgs))
             feats = feat_extractor(torch.stack(imgs, 0).to(self.device))
             image_feats.append(feats.data.cpu())
