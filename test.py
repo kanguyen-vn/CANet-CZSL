@@ -55,6 +55,7 @@ def main():
 
     # Get model and optimizer
     args.train = False
+    args.rank = 0
     image_extractor, model = configure_model(args, testset, train=args.train)
     print(model)
 
