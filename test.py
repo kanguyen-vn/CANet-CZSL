@@ -90,8 +90,10 @@ def test(image_extractor, model, testloader, evaluator, args):
 
     for _, data in tqdm(enumerate(testloader), total=len(testloader), desc='Testing'):
         data = [d.to(args.device) for d in data]
+        print(f"{len(data) = }")
         if image_extractor:
             data[0] = image_extractor(data[0])
+            print(f"{data[0].shape = }")
         _, predictions = model.val_forward(data)
         attr_truth, obj_truth, pair_truth = data[1], data[2], data[3]
         all_pred.append(predictions)
