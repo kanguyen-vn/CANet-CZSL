@@ -257,12 +257,19 @@ class CompositionDataset(Dataset):
         image_files = []
         for chunk in tqdm(chunks(files_all, 1024), total=len(files_all) // 1024, desc=f'Extracting features {model}'):
             files = chunk
-            imgs = list(map(self.loader, files))
-            imgs = [img for img in imgs if img is not None]
+            # imgs = list(map(self.loader, files))
+            # imgs = [img for img in imgs if img is not None]
+            imgs = []
+            noncorrupted_files = []
+            for file in files:
+                img = self.loader(file)
+                if img is not None:
+                    imgs.append(img)
+                    noncorrupted_files.append(file)
             imgs = list(map(transform, imgs))
             feats = feat_extractor(torch.stack(imgs, 0).to(self.device))
             image_feats.append(feats.data.cpu())
-            image_files += files
+            image_files += noncorrupted_files
         image_feats = torch.cat(image_feats, dim=0)
         print('features for %d images generated' % (len(image_files)))
 
