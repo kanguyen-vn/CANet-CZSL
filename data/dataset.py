@@ -254,6 +254,7 @@ class CompositionDataset(Dataset):
         image_files = []
         for chunk in tqdm(chunks(files_all, 1024), total=len(files_all) // 1024, desc=f'Extracting features {model}'):
             files = chunk
+            print(f"{files = }")
             imgs = list(map(self.loader, files))
             imgs = list(map(transform, imgs))
             feats = feat_extractor(torch.stack(imgs, 0).to(self.device))
