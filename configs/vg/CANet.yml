@@ -16,5 +16,5 @@ training:
   cosine_scale: 0.05
   max_epochs: 800
   test_batch_size: 2048
-  update_image_features: false # Fine tune the image backbone?
+  update_image_features: true # false # Fine tune the image backbone?
   update_word_features: true
