@@ -11,7 +11,7 @@ model_params:
 
 training:
   batch_size: 256
-  lr: 5.0e-05
+  lr: 5.0e-06
   lrg: 5.0e-06 # Learning rete for image backbone if fine-tune the backbone
   cosine_scale: 0.05
   max_epochs: 800
