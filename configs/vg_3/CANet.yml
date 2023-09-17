@@ -12,7 +12,7 @@ training:
   cosine_scale: 0.05
   lr: 5.0e-05
   lrg: 5.0e-06
-  max_epochs: 30
+  max_epochs: 500
   test_batch_size: 2048
   update_image_features: false
   update_word_features: true
