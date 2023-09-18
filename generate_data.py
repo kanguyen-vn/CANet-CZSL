@@ -19,6 +19,9 @@ def main():
             data_ids = [x["id"] for x in data["images"]]
         
         data_attrs = []
+
+        # Swap test and val splits
+        alt_set = split_str if split_str == "train" else ("val" if split_str == "test" else "test")
         
         for img in js:
             img_id = img["image_id"]
@@ -45,11 +48,11 @@ def main():
                     img_attr_tuples.append({"attr": attr, "obj": obj})
             data_attrs.extend(img_attrs)
             for img_attr in img_attr_tuples:
-                metadata_dict = {"image": f"{img_id}.jpg", "set": split_str}
+                metadata_dict = {"image": f"{img_id}.jpg", "set": alt_set}
                 metadata_dict.update(img_attr)
                 metadata_attrs.append(metadata_dict)
 
-        with open(split_dir / f"{split_str}_pairs.txt", "w") as f:
+        with open(split_dir / f"{alt_set}_pairs.txt", "w") as f:
             f.write("\n".join(list(set(data_attrs))))
 
     torch.save(metadata_attrs, vg_dir / "metadata_compositional-split-natural.t7")
