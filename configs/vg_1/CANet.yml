@@ -4,7 +4,7 @@ dataset:
   train_only: true
 model_params:
   alpha: 0.4
-  emb_type: ft+w2v
+  emb_type: fasttext
   nhiddenlayers: 0
   nlayer: 2
 training:
