@@ -56,7 +56,8 @@ def generate_combined_dataset(
             label = label_dir.name
             for img_path in label_dir.iterdir():
                 symlink_path = combined_images_dir / label / img_path.name
-                symlink_path.symlink_to(img_path)
+                if not symlink_path.exists():
+                    symlink_path.symlink_to(img_path)
 
     # Combine vocabulary
     for split_str in ["train", "val", "test"]:
