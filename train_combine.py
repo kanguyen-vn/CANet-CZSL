@@ -63,7 +63,8 @@ def generate_combined_dataset(
         pairs = []
         for ds in datasets:
             with open(data_root / ds / splitname / f"{split_str}_pairs.txt") as f:
-                pairs.extend(filter(bool, [line.strip() for line in f.splitlines()]))
+                lines = [line.strip() for line in f.readlines()]
+                pairs.extend([line for line in lines if len(line) > 0])
 
         pairs = list(set(pairs))
         with open(combined_ds_dir / splitname / f"{split_str}_pairs.txt", "w") as f:
