@@ -64,7 +64,7 @@ def generate_combined_dataset(
             pair, img = img_path.split("/")
             pair = pair.replace("_", " ")
             img_path = pair + "/" + img
-        return Path(ds) / img_path
+        return Path(ds) / "images" / img_path
 
     first_ds = torch.load(dataroot / datasets[0] / f"metadata_{splitname}.t7")
     train_set = [sample for sample in first_ds if sample["set"] == "train"]
@@ -85,8 +85,6 @@ def generate_combined_dataset(
     # Generate combined image data via symbolic links
     combined_images_dir = combined_ds_dir / "images"
     combined_images_dir.mkdir(parents=True, exist_ok=True)
-
-    print(f"{dataroot = }")
 
     for img_path in img_paths_to_copy:
         symlink_path = combined_images_dir / img_path.relative_to(img_path.parents[1])
