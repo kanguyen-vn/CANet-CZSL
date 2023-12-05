@@ -89,8 +89,6 @@ def generate_combined_dataset(
     for img_path in img_paths_to_copy:
         symlink_path = combined_images_dir / img_path.relative_to(img_path.parents[1])
         symlink_path.parent.mkdir(parents=True, exist_ok=True)
-        print(f"{symlink_path = }")
-        print(f"{(dataroot / img_path).resolve() = }")
         if not symlink_path.is_symlink():
             symlink_path.symlink_to(dataroot / img_path)
 
