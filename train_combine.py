@@ -92,7 +92,7 @@ def generate_combined_dataset(
         print(f"{symlink_path = }")
         print(f"{(dataroot / img_path).resolve() = }")
         if not symlink_path.is_symlink():
-            symlink_path.symlink_to((dataroot / img_path).resolve())
+            symlink_path.symlink_to(dataroot / img_path)
 
 
 def main():
