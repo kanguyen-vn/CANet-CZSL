@@ -1,6 +1,6 @@
 ---
 dataset:
-  dataset: paco
+  dataset: mit-states+paco
   splitname: compositional-split-natural
   train_only: true
 model_params:
