@@ -57,13 +57,19 @@ def generate_combined_dataset(
     img_paths_to_copy = []
     full_dataset = []
 
+    def get_img_path(img_path, ds):
+        if "/" not in img_path:
+            img_path = f"images/{img_path}"
+        if ds == "mit-states":
+            pair, img = img_path.split("/")
+            pair = pair.replace("_", " ")
+            img_path = pair + "/" + img
+        return Path(ds) / img_path
+
     first_ds = torch.load(data_root / datasets[0] / f"metadata_{splitname}.t7")
     train_set = [sample for sample in first_ds if sample["set"] == "train"]
     for sample in train_set:
-        img_path = sample["image"]
-        if "/" not in img_path:
-            img_path = f"images/{img_path}"
-        img_paths_to_copy.append(Path(datasets[0]) / img_path)
+        img_paths_to_copy.append(get_img_path(sample["image"], datasets[0]))
     full_dataset.extend(train_set)
 
     for ds in datasets[1:]:
@@ -72,10 +78,7 @@ def generate_combined_dataset(
             sample for sample in later_ds if sample["set"] in ["val", "test"]
         ]
         for sample in val_test_set:
-            img_path = sample["image"]
-            if "/" not in img_path:
-                img_path = f"images/{img_path}"
-            img_paths_to_copy.append(Path(ds) / img_path)
+            img_paths_to_copy.append(get_img_path(sample["image"], ds))
         full_dataset.extend(val_test_set)
     torch.save(full_dataset, combined_ds_dir / f"metadata_{splitname}.t7")
 
