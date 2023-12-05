@@ -63,7 +63,7 @@ def generate_combined_dataset(
         img_path = sample["image"]
         if "/" not in img_path:
             img_path = f"images/{img_path}"
-        img_paths_to_copy.append(datasets[0] / img_path)
+        img_paths_to_copy.append(Path(datasets[0]) / img_path)
     full_dataset.extend(train_set)
 
     for ds in datasets[1:]:
