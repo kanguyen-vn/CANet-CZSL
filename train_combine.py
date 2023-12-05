@@ -37,30 +37,11 @@ def generate_combined_dataset(
 ):
     data_root = Path(data_root)
     combined_ds_dir = data_root / dataset_str
-    combined_images_dir = combined_ds_dir / "images"
-    combined_images_dir.mkdir(parents=True, exist_ok=True)
-    (combined_ds_dir / splitname).mkdir(exist_ok=True)
 
-    # Generate combined image data via symbolic links
     datasets = dataset_str.split("+")
-    for ds in datasets:
-        for label_dir in (data_root / ds / "images").iterdir():
-            if not label_dir.is_dir():
-                continue
-            label = label_dir.name
-            (combined_images_dir / label).mkdir(exist_ok=True)
-
-    for ds in datasets:
-        for label_dir in (data_root / ds / "images").iterdir():
-            if not label_dir.is_dir():
-                continue
-            label = label_dir.name
-            for img_path in label_dir.iterdir():
-                symlink_path = (combined_images_dir / label / img_path.name).resolve()
-                if not symlink_path.is_symlink():
-                    symlink_path.symlink_to(img_path.resolve())
 
     # Combine vocabulary
+    (combined_ds_dir / splitname).mkdir(exist_ok=True)
     for split_str in ["train", "val", "test"]:
         pairs = []
         for ds in datasets:
@@ -73,15 +54,40 @@ def generate_combined_dataset(
             f.write("\n".join(pairs))
 
     # Combine samples (train from first set, val and test from latter ones)
+    img_paths_to_copy = []
     full_dataset = []
+
     first_ds = torch.load(data_root / datasets[0] / f"metadata_{splitname}.t7")
-    full_dataset.extend([sample for sample in first_ds if sample["set"] == "train"])
+    train_set = [sample for sample in first_ds if sample["set"] == "train"]
+    for sample in train_set:
+        img_path = sample["image"]
+        if "/" not in img_path:
+            img_path = f"images/{img_path}"
+        img_paths_to_copy.append(datasets[0] / img_path)
+    full_dataset.extend(train_set)
+
     for ds in datasets[1:]:
         later_ds = torch.load(data_root / ds / f"metadata_{splitname}.t7")
-        full_dataset.extend(
-            [sample for sample in later_ds if sample["set"] in ["val", "test"]]
-        )
+        val_test_set = [
+            sample for sample in later_ds if sample["set"] in ["val", "test"]
+        ]
+        for sample in val_test_set:
+            img_path = sample["image"]
+            if "/" not in img_path:
+                img_path = f"images/{img_path}"
+            img_paths_to_copy.append(Path(ds) / img_path)
+        full_dataset.extend(val_test_set)
     torch.save(full_dataset, combined_ds_dir / f"metadata_{splitname}.t7")
+
+    # Generate combined image data via symbolic links
+    combined_images_dir = combined_ds_dir / "images"
+    combined_images_dir.mkdir(parents=True, exist_ok=True)
+
+    for img_path in img_paths_to_copy:
+        symlink_path = combined_images_dir / img_path.relative_to(img_path.parents[1])
+        symlink_path.parent.mkdir(parents=True, exist_ok=True)
+        if not symlink_path.is_symlink():
+            symlink_path.symlink_to(img_path)
 
 
 def main():
