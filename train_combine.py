@@ -57,7 +57,7 @@ def generate_combined_dataset(
             label = label_dir.name
             for img_path in label_dir.iterdir():
                 symlink_path = combined_images_dir / label / img_path.name
-                if not symlink_path.exists():
+                if not symlink_path.is_symlink():
                     symlink_path.symlink_to(img_path)
 
     # Combine vocabulary
