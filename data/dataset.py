@@ -332,9 +332,12 @@ class CompositionDataset(Dataset):
         # Decide what to output
         if not self.update_image_features:
             if "mit-states" in self.args.dataset:
-                pair, img = image.split("/")
-                pair = pair.replace("_", " ")
-                image = pair + "/" + img
+                if "/" not in image:
+                    image = f"images/{image}"
+                else:
+                    pair, img = image.split("/")
+                    pair = pair.replace("_", " ")
+                    image = pair + "/" + img
             elif self.args.dataset.startswith("vg") or self.args.dataset.startswith(
                 "paco"
             ):
