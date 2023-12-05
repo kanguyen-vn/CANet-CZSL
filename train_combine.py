@@ -39,6 +39,7 @@ def generate_combined_dataset(
     combined_ds_dir = data_root / dataset_str
     combined_images_dir = combined_ds_dir / "images"
     combined_images_dir.mkdir(parents=True, exist_ok=True)
+    (combined_ds_dir / splitname).mkdir(exist_ok=True)
 
     # Generate combined image data via symbolic links
     datasets = dataset_str.split("+")
