@@ -87,6 +87,9 @@ def generate_combined_dataset(
     combined_images_dir.mkdir(parents=True, exist_ok=True)
 
     for img_path in img_paths_to_copy:
+        print(f"{combined_images_dir = }")
+        print(f"{img_path = }")
+        print(f"{img_path.relative_to(img_path.parents[1]) = }")
         symlink_path = (
             combined_images_dir / img_path.relative_to(img_path.parents[1])
         ).resolve()
