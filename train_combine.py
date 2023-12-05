@@ -92,7 +92,7 @@ def generate_combined_dataset(
         ).resolve()
         symlink_path.parent.mkdir(parents=True, exist_ok=True)
         if not symlink_path.is_symlink():
-            symlink_path.symlink_to(img_path.resolve())
+            symlink_path.symlink_to((data_root / img_path).resolve())
 
 
 def main():
