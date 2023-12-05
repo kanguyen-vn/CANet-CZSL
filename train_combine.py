@@ -41,7 +41,7 @@ def generate_combined_dataset(
     datasets = dataset_str.split("+")
 
     # Combine vocabulary
-    (combined_ds_dir / splitname).mkdir(exist_ok=True)
+    (combined_ds_dir / splitname).mkdir(parents=True, exist_ok=True)
     for split_str in ["train", "val", "test"]:
         pairs = []
         for ds in datasets:
