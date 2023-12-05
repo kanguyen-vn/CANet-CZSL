@@ -35,8 +35,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1"
 def generate_combined_dataset(
     dataset_str, data_root, splitname="compositional-split-natural"
 ):
-    data_root = Path(data_root)
-    combined_ds_dir = data_root / dataset_str
+    dataroot = Path(data_root)
+    combined_ds_dir = dataroot / dataset_str
 
     datasets = dataset_str.split("+")
 
@@ -45,7 +45,7 @@ def generate_combined_dataset(
     for split_str in ["train", "val", "test"]:
         pairs = []
         for ds in datasets:
-            with open(data_root / ds / splitname / f"{split_str}_pairs.txt") as f:
+            with open(dataroot / ds / splitname / f"{split_str}_pairs.txt") as f:
                 lines = [line.strip() for line in f.readlines()]
                 pairs.extend([line for line in lines if len(line) > 0])
 
@@ -66,14 +66,14 @@ def generate_combined_dataset(
             img_path = pair + "/" + img
         return Path(ds) / img_path
 
-    first_ds = torch.load(data_root / datasets[0] / f"metadata_{splitname}.t7")
+    first_ds = torch.load(dataroot / datasets[0] / f"metadata_{splitname}.t7")
     train_set = [sample for sample in first_ds if sample["set"] == "train"]
     for sample in train_set:
         img_paths_to_copy.append(get_img_path(sample["image"], datasets[0]))
     full_dataset.extend(train_set)
 
     for ds in datasets[1:]:
-        later_ds = torch.load(data_root / ds / f"metadata_{splitname}.t7")
+        later_ds = torch.load(dataroot / ds / f"metadata_{splitname}.t7")
         val_test_set = [
             sample for sample in later_ds if sample["set"] in ["val", "test"]
         ]
@@ -86,14 +86,13 @@ def generate_combined_dataset(
     combined_images_dir = combined_ds_dir / "images"
     combined_images_dir.mkdir(parents=True, exist_ok=True)
 
+    print(f"{dataroot = }")
+
     for img_path in img_paths_to_copy:
         symlink_path = combined_images_dir / img_path.relative_to(img_path.parents[1])
-        print(f"{symlink_path = }")
-        print(f"{symlink_path.parent = }")
-        print(f"{(data_root / img_path).resolve() = }")
         symlink_path.parent.mkdir(parents=True, exist_ok=True)
         if not symlink_path.is_symlink():
-            symlink_path.symlink_to((data_root / img_path).resolve())
+            symlink_path.symlink_to((dataroot / img_path).resolve())
 
 
 def main():
